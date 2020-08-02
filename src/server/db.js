@@ -5,9 +5,8 @@ const Twilio = require('twilio')
 const sid='AC5c78f94534680de28d93cc2369a5f8ec'
 const token='d4f6bf2aa9c983665cfe3446f8e5735b'
 
-mongoose.connect('mongodb://localhost/bm',{ useNewUrlParser: true })
+mongoose.connect('mongodb://localhost/hbd',{ useNewUrlParser: true })
 
-//设计表结构
 const Schema = mongoose.Schema
 
 const ReminderSchema = new Schema({
@@ -104,10 +103,6 @@ exports.update=function(data,updates){
 }
 
 exports.Reminder = Reminder
-
-//创建模型
-//第一个参数: 传入一个大写名词单数字符串来表示数据库名称，mongoose会自动转成小写复数(User=>users)
-//返回模型对象(模型构造函数)
 
 const userSchema = new Schema({
 	phone:{
