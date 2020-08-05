@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
 import injectTapEventPlugin from "react-tap-event-plugin"
-
 import Form from "./Form"
 import Table from "./Table"
 import Grid from '@material-ui/core/Grid'
 import Link from '@material-ui/core/Link'
 
-
 export default class Dashboard extends Component{
-	
 	constructor(props){
 		super(props)
 		this.state={
