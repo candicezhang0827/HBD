@@ -2,11 +2,13 @@ const mongoose = require('mongoose')
 const moment = require('moment')
 const Twilio = require('twilio')
 
-const sid='AC5c78f94534680de28d93cc2369a5f8ec'
-const token='d4f6bf2aa9c983665cfe3446f8e5735b'
+const sid='AC1c574983b330a51b3e9c7c3cdad7be16'	
+const token='a89cb54dadc05334b18799c8fd381e38'
+const twilioPhone=''
 
-mongoose.connect('mongodb://localhost/hbd',{ useNewUrlParser: true })
+mongoose.connect('mongodb://localhost/bm',{ useNewUrlParser: true })
 
+//设计表结构
 const Schema = mongoose.Schema
 
 const ReminderSchema = new Schema({
@@ -14,13 +16,14 @@ const ReminderSchema = new Schema({
 	receiverName: String,
 	receiverPhone: String,
 	message: String,
-	date: String
+	date: String,	//MM-DD
+	time: Number	//hh:mm
 })
 
-ReminderSchema.methods.requiresNotification = function(day){
-	const bd=this.date
-	const today=moment(day).format('MM-DD')
-	return bd===today
+ReminderSchema.methods.requiresNotification = function(curr){
+	const today=moment(curr).format('MM-DD')
+	const hour=curr.getHours()
+	return this.date===today && this.time===hour
 }
 
 ReminderSchema.statics.sendNotifications = function sendNotifications(){
@@ -34,8 +37,8 @@ ReminderSchema.statics.sendNotifications = function sendNotifications(){
 			reminders.forEach(function(reminder){
 				const options={
 					to: `+ ${reminder.receiverPhone}`,
-					from: `+ ${reminder.senderPhone}`,
-					body: `${reminder.message}`
+					from: `+ ${twilioPhone}`,
+					body: `Hi, you have below message: ${reminder.message} sending to ${reminder.receiverName} at ${reminder.receiverPhone}`
 				}
 
 				client.messages.create(options,function(err,res){
@@ -103,6 +106,10 @@ exports.update=function(data,updates){
 }
 
 exports.Reminder = Reminder
+
+//创建模型
+//第一个参数: 传入一个大写名词单数字符串来表示数据库名称，mongoose会自动转成小写复数(User=>users)
+//返回模型对象(模型构造函数)
 
 const userSchema = new Schema({
 	phone:{
