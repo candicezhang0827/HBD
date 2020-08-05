@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
 import injectTapEventPlugin from "react-tap-event-plugin"
 
-//import "./Dashboard.css"	//need this file
 import Form from "./Form"
 import Table from "./Table"
-
+import Grid from '@material-ui/core/Grid'
+import Link from '@material-ui/core/Link'
 
 
 export default class Dashboard extends Component{
@@ -96,17 +96,25 @@ export default class Dashboard extends Component{
                 prop: "date"
               },
               {
+              	name:'Time',
+              	prop: 'time'
+              },
+              {
                 name: "Message",
                 prop: "message"
               }
             ]}
           />
-        </div>
+          <Grid container>
+          	<Grid item xs> </Grid>
+          	<Grid item>
+          		<Link onClick={this.props.logout}>Logout</Link>
+          	</Grid>
+          </Grid>
+          </div>
       </MuiThemeProvider>
     );
   }
 
-
-	
 }
 
