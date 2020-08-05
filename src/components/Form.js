@@ -7,7 +7,8 @@ export default class Form extends React.Component {
     receiverName:'',
     receiverPhone:'',
     message:'',
-    date:''
+    date:'',
+    time: ''
   };
 
   change = e => {
@@ -21,11 +22,13 @@ export default class Form extends React.Component {
   	alert('Error with date input. Please input with format MM-DD')
   }
 
-  validate = (date) => {
+  validateDate = (date) => {
     if (date.length!=5){
 		this.errorAlert()
+		return 1
 	}else if (date[2]!=='-'){
 		this.errorAlert()
+		return 1
 	}else{
 		let month=parseInt(date.substring(0,2))
 		let day=parseInt(date.substring(3,5))
@@ -47,9 +50,31 @@ export default class Form extends React.Component {
 	}
   }
 
+  timeErr = ()=>{
+  	alert('Error with time input. Please input with format hh (00-11)')
+  }
+
+  validateTime = (time)=>{
+  	if (time.length!=2){
+  		this.timeErr()
+  		return 1
+  	}else{
+  		let hour=parseInt(time)
+  		if (isNaN(hour)){
+  			this.timeErr()
+  			return 1
+  		}else if (hour>11 || hour<0){
+  			this.timeErr()
+  			return 1
+  		}else{
+  			return 0
+  		}
+  	}
+  }
+
   onSubmit = e => {
     e.preventDefault();
-    let err = this.validate(this.state.date);
+    let err = this.validateDate(this.state.date) || this.validateTime(this.state.time);
     if (!err) {
       this.props.onSubmit(this.state);
       // clear form
@@ -57,7 +82,8 @@ export default class Form extends React.Component {
         receiverName:'',
         receiverPhone:'',
         message:'',
-        date:''
+        date:'',
+        time:''
       });
     }
   };
@@ -97,6 +123,15 @@ export default class Form extends React.Component {
           hintText="Date"
           floatingLabelText="Date"
           value={this.state.date}
+          onChange={e => this.change(e)}
+          floatingLabelFixed
+        />
+        <br />
+        <TextField
+          name="time"
+          hintText="Please input with format hh"
+          floatingLabelText="Time"
+          value={this.state.time}
           onChange={e => this.change(e)}
           floatingLabelFixed
         />
