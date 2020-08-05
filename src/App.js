@@ -46,6 +46,10 @@ class App extends Component {
     localStorage.setItem('id_user',phone)
     this.setState({loggedIn: true, register:false, user: phone})
   }
+
+  logout = ()=>{
+    this.setState({loggedIn:false,user:''})
+  }
   
   register = () => this.setState({register: true})
 
@@ -57,7 +61,7 @@ class App extends Component {
     
     return (
         this.state.loggedIn?
-        <Dashboard socket={socket} user={this.state.user} />
+        <Dashboard socket={socket} user={this.state.user} logout={this.logout}/>
         :
         this.state.register?
         <Register socket={socket} returnToLogin={this.returnToLogin} />
