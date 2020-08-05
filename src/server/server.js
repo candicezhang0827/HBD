@@ -53,6 +53,7 @@ io.on('connection', socket=>{
 
 	socket.on('addReceivers',(user,data)=>{
 		data['senderPhone']=user
+		data['time']=parseInt(data['time'])
 		console.log(data)
 		let prom=db.create(data)
 		prom.then(res=>{
@@ -66,6 +67,7 @@ io.on('connection', socket=>{
 
 	socket.on('deleteReceivers',(user,data)=>{
 		data['senderPhone']=user
+		data['time']=parseInt(data['time'])
 		let prom=db.delete(data)
 		prom.then(res=>{
 			console.log(res)
@@ -78,10 +80,10 @@ io.on('connection', socket=>{
 
 	socket.on('updateReceivers',(user,data,updates)=>{
 		data['senderPhone']=user
-		console.log('data to be updated: ')
-		console.log(data)
-		console.log('updates: ')
-		console.log(updates)
+		data['time']=parseInt(data['time'])
+		if (updates.hasOwnProperty('time')){
+			updates['time']=parseInt(data['time'])
+		}
 		let prom=db.update(data,updates)
 		prom.then(res=>{
 			console.log(res)
@@ -113,5 +115,3 @@ const scheduler = function(){
 }
 
 scheduler().start()
-
-
